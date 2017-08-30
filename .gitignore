@@ -1,0 +1,10 @@
+## Ignore all temporary/generated files of VS
+prj/*
+!*.sln
+!*.vcxproj
+!*.filters
+
+
+
+## Ignore abcxyz
+
