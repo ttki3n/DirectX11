@@ -13,7 +13,7 @@ GraphicsClass::~GraphicsClass()
 {
 }
 
-bool GraphicsClass::Initialize(unsigned int width, unsigned height, HWND hwnd)
+bool GraphicsClass::Initialize(unsigned int width, unsigned int height, HWND hwnd)
 {
 	return true;
 }
