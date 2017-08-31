@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GraphicsClass" Collapsed="true">
+    <Position X="4.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAgAAAAQAAAAAAAQAAAAAAAAAAABAAAAAAAAE=</HashCode>
+      <FileName>D:\MyProjects\DirectX11\include\GraphicsClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputClass" Collapsed="true">
+    <Position X="7.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAgQAAAAgAAgAAABAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>D:\MyProjects\DirectX11\include\InputClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemClass" Collapsed="true">
+    <Position X="6.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQAACAAAASAAgYAAAABQAAAAAAAAAAc=</HashCode>
+      <FileName>D:\MyProjects\DirectX11\include\SystemClass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
