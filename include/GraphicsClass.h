@@ -1,5 +1,7 @@
 #pragma once
 
+#include "D3DClass.h"
+
 const bool IS_FULL_SCREEN = false;
 const bool IS_VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
@@ -19,5 +21,6 @@ public:
 
 private:
 	bool Render();
+	std::unique_ptr<D3DClass> m_directX3DPtr;
 
 };

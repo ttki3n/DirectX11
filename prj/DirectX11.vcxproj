@@ -126,12 +126,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\D3DClass.h" />
     <ClInclude Include="..\include\GraphicsClass.h" />
     <ClInclude Include="..\include\InputClass.h" />
     <ClInclude Include="..\include\stdafx.h" />
     <ClInclude Include="..\include\SystemClass.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\D3DClass.cpp" />
     <ClCompile Include="..\src\GraphicsClass.cpp" />
     <ClCompile Include="..\src\InputClass.cpp" />
     <ClCompile Include="..\src\main.cpp" />
