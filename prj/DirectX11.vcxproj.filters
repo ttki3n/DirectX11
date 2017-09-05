@@ -7,6 +7,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{173e7c48-3d9c-4b6b-8aa8-30714daee199}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{a31ee0cf-cdeb-4170-99b0-956300db43c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\InputClass.h">
@@ -47,5 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="..\src\shaders\colorVS.hlsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\src\shaders\colorPS.hlsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
