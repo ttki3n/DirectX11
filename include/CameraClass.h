@@ -1,0 +1,25 @@
+#pragma once
+
+#include "D3DHelper.h"
+
+class CameraClass
+{
+public:
+	CameraClass();
+	CameraClass(const CameraClass& other);
+	~CameraClass();
+
+	void SetPosition(float, float, float);
+	void SetRotation(float, float, float);
+
+	XMFLOAT3 GetPosition();
+	XMFLOAT3 GetRotation();
+
+	void Render();
+	void GetViewMatrix(XMMATRIX&);
+
+private:
+	float m_posX, m_posY, m_posZ;
+	float m_rotationX, m_rotationY, m_rotationZ;
+	XMMATRIX m_viewMatrix;
+};

@@ -33,6 +33,12 @@
     <ClInclude Include="..\include\D3DHelper.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\ModelClass.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\CameraClass.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\InputClass.cpp">
@@ -54,6 +60,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ColorShaderClass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ModelClass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CameraClass.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

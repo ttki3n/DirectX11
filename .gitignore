@@ -4,6 +4,7 @@ prj/*
 !*.vcxproj
 !*.filters
 !*.cd
+!props
 
 
 ## Ignore abcxyz

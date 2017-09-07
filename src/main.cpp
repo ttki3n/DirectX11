@@ -19,4 +19,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline,
 
 	// Shutdown and release the system object
 	system->Shutdown();
+
+	return 1;
 }

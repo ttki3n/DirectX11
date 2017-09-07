@@ -28,7 +28,7 @@ private:
 	void InitializeWindows(int& screenWidth, int& screenHeight);
 	void ShutdownWindows();
 
-	LPCSTR m_applicationName;
+	LPCWSTR m_applicationName;
 	HINSTANCE m_hInstance;
 	HWND m_hwnd;
 

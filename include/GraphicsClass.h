@@ -1,6 +1,9 @@
 #pragma once
 
 #include "D3DClass.h"
+#include "CameraClass.h"
+#include "ModelClass.h"
+#include "ColorShaderClass.h"
 
 const bool IS_FULL_SCREEN = false;
 const bool IS_VSYNC_ENABLED = true;
@@ -22,5 +25,7 @@ public:
 private:
 	bool Render();
 	std::unique_ptr<D3DClass> m_directX3DPtr;
-
+	std::unique_ptr<CameraClass> m_cameraPtr;
+	std::unique_ptr<ModelClass> m_modelPtr;
+	std::unique_ptr<ColorShaderClass> m_colorShaderPtr;
 };

@@ -138,7 +138,7 @@ void SystemClass::InitializeWindows(int& screenWidth, int& screenHeight)
 
 	// Get the instance of this application
 	m_hInstance = GetModuleHandle(NULL);
-	m_applicationName = "DirectX11 Engine";
+	m_applicationName = L"DirectX11 Engine";
 
 	// Setup the windows class with default settings
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
