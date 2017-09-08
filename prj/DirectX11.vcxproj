@@ -157,8 +157,8 @@
     <ClCompile Include="..\src\SystemClass.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\shaders\colorPS.hlsl" />
-    <None Include="..\src\shaders\colorVS.hlsl" />
+    <None Include="..\shaders\colorPS.hlsl" />
+    <None Include="..\shaders\colorVS.hlsl" />
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
