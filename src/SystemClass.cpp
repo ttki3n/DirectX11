@@ -7,6 +7,9 @@ SystemClass::SystemClass()
 {
 	m_Input = nullptr;
 	m_Graphics = nullptr;
+	m_targetFramerate = 60.0f;
+	m_maxTimeStep = 1.0f / m_targetFramerate;
+	m_curTime = m_prevTime = std::chrono::steady_clock::now();
 }
 
 SystemClass::SystemClass(const SystemClass& other)
@@ -77,7 +80,14 @@ void SystemClass::Run()
 		}
 		else
 		{
-			result = Frame();
+			m_curTime = std::chrono::steady_clock::now();			
+			m_deltaTime = (std::chrono::duration<float>(m_curTime - m_prevTime)).count();
+			m_prevTime = m_curTime;
+
+			//limit
+			m_deltaTime = std::min<float>(m_deltaTime, m_maxTimeStep);
+			
+			result = Frame(m_deltaTime);
 			if (!result)
 			{
 				done = true;
@@ -86,7 +96,7 @@ void SystemClass::Run()
 	}
 }
 
-bool SystemClass::Frame()
+bool SystemClass::Frame(float deltaTime)
 {
 	bool result;
 
@@ -97,7 +107,7 @@ bool SystemClass::Frame()
 	}
 
 	// Do the frame processing for the graphics object
-	result = m_Graphics->Frame();
+	result = m_Graphics->Frame(deltaTime);
 	if (!result)
 	{
 		return false;

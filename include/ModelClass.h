@@ -19,6 +19,9 @@ public:
 	void Shutdown();
 	void Render(ID3D11DeviceContext* deviceContext);
 
+	bool LoadSampleTriangle(VertexType **vertices, int &vertexCount, unsigned long **indices, int &indexCount);
+	bool LoadSampleCube(VertexType **vertices, int &vertexCount, unsigned long **indices, int &indexCount);
+
 	int GetIndexCount();
 private:
 	bool InitializeBuffers(ID3D11Device* device);

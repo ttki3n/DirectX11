@@ -20,10 +20,10 @@ public:
 
 	bool Initialize(unsigned int width, unsigned int height, HWND hwnd);
 	void Shutdown();
-	bool Frame();
+	bool Frame(float deltaTime);
 
 private:
-	bool Render();
+	bool Render(float deltaTime);
 	std::unique_ptr<D3DClass> m_directX3DPtr;
 	std::unique_ptr<CameraClass> m_cameraPtr;
 	std::unique_ptr<ModelClass> m_modelPtr;

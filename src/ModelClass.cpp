@@ -42,40 +42,15 @@ int ModelClass::GetIndexCount()
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
 {
 	// Set triangle manually for this tutorial
-	VertexType* vertices;
-	unsigned long* indices;
+	VertexType* vertices = nullptr;
+	unsigned long* indices = nullptr;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT hr;
 
-	m_vertexCount = 3;
-	m_indexCount = 3;
-
-	vertices = new VertexType[m_vertexCount];
-	if (!vertices)
-	{
-		return false;
-	}
-
-	indices = new unsigned long[m_indexCount];
-	if (!indices)
-	{
-		return false;
-	}
-
-	// Sample data
-	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-	vertices[0].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	vertices[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
-	vertices[2].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-
-	// Load the index array with data
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 2;
-
+	//LoadSampleTriangle(&vertices, m_vertexCount, &indices, m_indexCount);
+	LoadSampleCube(&vertices, m_vertexCount, &indices, m_indexCount);
+	
 	// Setup the description of the static vertex buffer
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	vertexBufferDesc.ByteWidth = sizeof(VertexType) * m_vertexCount;
@@ -140,4 +115,68 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+bool ModelClass::LoadSampleTriangle(VertexType **vertices, int &vertexCount, unsigned long **indices, int &indexCount)
+{
+	// Triangle data	
+	vertexCount = 3;
+	indexCount = 3;
+
+	*vertices = new VertexType[vertexCount];
+	if (!*vertices)
+	{
+		return false;
+	}
+
+	*indices = new unsigned long[indexCount];
+	if (!*indices)
+	{
+		return false;
+	}
+
+	// Sample data
+	(*vertices)[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	(*vertices)[0].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	(*vertices)[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	(*vertices)[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	(*vertices)[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	(*vertices)[2].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+
+	// Load the index array with data
+	(*indices)[0] = 0;
+	(*indices)[1] = 1;
+	(*indices)[2] = 2;
+
+	return true;
+}
+
+bool ModelClass::LoadSampleCube(VertexType **vertices, int &vertexCount, unsigned long **indices, int &indexCount)
+{
+	vertexCount = 8;
+	indexCount = 36;
+
+	*vertices = new VertexType[vertexCount]
+	{
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f) }, // 0
+		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f) }, // 1
+		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 0.0f) }, // 2
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 0.0f) }, // 3
+		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 0.0f) }, // 4
+		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 0.0f) }, // 5
+		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f) }, // 6
+		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 0.0f) }  // 7
+	};
+
+	*indices = new unsigned long[indexCount]
+	{
+		0, 1, 2, 0, 2, 3,
+		4, 6, 5, 4, 7, 6,
+		4, 5, 1, 4, 1, 0,
+		3, 2, 6, 3, 6, 7,
+		1, 5, 6, 1, 6, 2,
+		4, 0, 3, 4, 3, 7
+	};
+
+	return true;
 }

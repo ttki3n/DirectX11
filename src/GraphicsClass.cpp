@@ -89,29 +89,34 @@ void GraphicsClass::Shutdown()
 	}
 }
 
-bool GraphicsClass::Frame()
+bool GraphicsClass::Frame(float deltaTime)
 {
 	bool result;
-	result = Render();
+	result = Render(deltaTime);
 	return result;
 }
 
-bool GraphicsClass::Render()
-{
-	static float r_color = 0.0f;
+bool GraphicsClass::Render(float deltaTime)
+{	
+	static float angle = 0.0f;
+	static XMVECTOR rotationAxis = XMVectorSet(0, 1, 1, 0);
+
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	bool result;
 
-	m_directX3DPtr->BeginScene(r_color, 0.5f, 0.5f, 1.0f);
+	m_directX3DPtr->BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
 
 	// Generate the view matrix based on the camera's position
 	m_cameraPtr->Render();
 
 	// Get the world, view and projection matrices from the camera & d3d object
-	m_directX3DPtr->GetWorldMatrix(worldMatrix);
+	//m_directX3DPtr->GetWorldMatrix(worldMatrix);
 	m_directX3DPtr->GetProjectionMatrix(projectionMatrix);
 	m_cameraPtr->GetViewMatrix(viewMatrix);
-
+		
+	angle += 1.0f * deltaTime;
+	worldMatrix = XMMatrixRotationAxis(rotationAxis, angle);
+	
 	// Put the model on the graphics pipeline to prepate them for drawing
 	m_modelPtr->Render(m_directX3DPtr->GetDeviceContext());
 
@@ -124,11 +129,7 @@ bool GraphicsClass::Render()
 	}
 
 	m_directX3DPtr->EndScene();
-	r_color += 0.01f;
-	if (r_color > 1.0f)
-	{
-		r_color = 0.0f;
-	}
+	
 	return true;
 }
 
