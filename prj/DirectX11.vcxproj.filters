@@ -39,6 +39,9 @@
     <ClInclude Include="..\include\CameraClass.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\TextureShaderClass.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\InputClass.cpp">
@@ -68,6 +71,9 @@
     <ClCompile Include="..\src\CameraClass.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TextureShaderClass.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -77,5 +83,13 @@
     <None Include="..\shaders\colorVS.hlsl">
       <Filter>shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\shaders\TextureVS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\shaders\TexturePS.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
