@@ -116,8 +116,8 @@ bool GraphicsClass::Render(float deltaTime)
 	m_cameraPtr->GetViewMatrix(viewMatrix);
 		
 	angle += 1.0f * deltaTime;
-	//worldMatrix = XMMatrixRotationAxis(rotationAxis, angle);
-	
+	worldMatrix = XMMatrixRotationAxis(rotationAxis, angle);
+	worldMatrix = XMMatrixRotationY(angle);
 	// Put the model on the graphics pipeline to prepate them for drawing
 	m_modelPtr->Render(m_directX3DPtr->GetDeviceContext());
 
