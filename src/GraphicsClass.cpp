@@ -6,7 +6,7 @@ GraphicsClass::GraphicsClass()
 	m_directX3DPtr = nullptr;
 	m_cameraPtr = nullptr;
 	m_modelPtr = nullptr;
-	m_colorShaderPtr = nullptr;
+	m_shaderPtr = nullptr;
 }
 
 GraphicsClass::GraphicsClass(const GraphicsClass& other)
@@ -47,23 +47,24 @@ bool GraphicsClass::Initialize(unsigned int width, unsigned int height, HWND hwn
 		return false;
 	}
 
-	result = m_modelPtr->Initialize(m_directX3DPtr->GetDevice());
+	result = m_modelPtr->Initialize(m_directX3DPtr->GetDevice(), m_directX3DPtr->GetDeviceContext(), "../data/stone01.tga");	
+	
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object", L"Error", MB_OK);
 		return false;
 	}
 
-	m_colorShaderPtr = std::make_unique<ColorShaderClass>();
-	if (!m_colorShaderPtr)
+	m_shaderPtr = std::make_unique<TextureShaderClass>();
+	if (!m_shaderPtr)
 	{
 		return false;
 	}
 
-	result = m_colorShaderPtr->Initialize(m_directX3DPtr->GetDevice(), hwnd);
+	result = m_shaderPtr->Initialize(m_directX3DPtr->GetDevice(), hwnd);
 	if (!result)
 	{
-		MessageBox(hwnd, L"Could not initialize the color shader object", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize the shader object", L"Error", MB_OK);
 		return false;
 	}
 
@@ -72,9 +73,9 @@ bool GraphicsClass::Initialize(unsigned int width, unsigned int height, HWND hwn
 
 void GraphicsClass::Shutdown()
 {
-	if (m_colorShaderPtr)
+	if (m_shaderPtr)
 	{
-		m_colorShaderPtr->Shutdown();
+		m_shaderPtr->Shutdown();
 	}
 
 	if (m_modelPtr)
@@ -121,8 +122,8 @@ bool GraphicsClass::Render(float deltaTime)
 	m_modelPtr->Render(m_directX3DPtr->GetDeviceContext());
 
 	// Render the model using the color shader
-	result = m_colorShaderPtr->Render(m_directX3DPtr->GetDeviceContext(), m_modelPtr->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix);
+	result = m_shaderPtr->Render(m_directX3DPtr->GetDeviceContext(), m_modelPtr->GetIndexCount(),
+		worldMatrix, viewMatrix, projectionMatrix, m_modelPtr->GetTexture());
 	if (!result)
 	{
 		return false;

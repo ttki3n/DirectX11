@@ -6,6 +6,7 @@ ModelClass::ModelClass()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
+	m_texture = 0;
 }
 
 ModelClass::ModelClass(const ModelClass& other)
@@ -16,15 +17,27 @@ ModelClass::~ModelClass()
 {
 }
 
-bool ModelClass::Initialize(ID3D11Device* device)
+bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename)
 {
 	bool result;
 	result = InitializeBuffers(device);
-	return result;
+	if (!result)
+	{
+		return false;
+	}
+
+	result = LoadTexture(device, deviceContext, textureFilename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void ModelClass::Shutdown()
 {
+	ReleaseTexture();
 	ShutdownBuffers();
 }
 
@@ -37,6 +50,11 @@ void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 int ModelClass::GetIndexCount()
 {
 	return m_indexCount;
+}
+
+ID3D11ShaderResourceView* ModelClass::GetTexture()
+{
+	return m_texture->GetTexture();
 }
 
 bool ModelClass::InitializeBuffers(ID3D11Device* device)
@@ -117,6 +135,36 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
+bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
+{
+	bool result;
+
+	m_texture = new TextureClass();
+	if (!m_texture)
+	{
+		return false;
+	}
+
+	// Initialize the texture object
+	result = m_texture->Initialize(device, deviceContext, filename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void ModelClass::ReleaseTexture()
+{
+	if (m_texture)
+	{
+		m_texture->Shutdown();
+		delete m_texture;
+		m_texture = 0;
+	}
+}
+
 bool ModelClass::LoadSampleTriangle(VertexType **vertices, int &vertexCount, unsigned long **indices, int &indexCount)
 {
 	// Triangle data	
@@ -137,11 +185,11 @@ bool ModelClass::LoadSampleTriangle(VertexType **vertices, int &vertexCount, uns
 
 	// Sample data
 	(*vertices)[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-	(*vertices)[0].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	(*vertices)[0].texcoord = XMFLOAT2(0.0f, 1.0f);
 	(*vertices)[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	(*vertices)[1].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	(*vertices)[1].texcoord = XMFLOAT2(0.5f, 0.0f);
 	(*vertices)[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
-	(*vertices)[2].color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	(*vertices)[2].texcoord = XMFLOAT2(1.0f, 1.0f);
 
 	// Load the index array with data
 	(*indices)[0] = 0;
@@ -155,19 +203,19 @@ bool ModelClass::LoadSampleCube(VertexType **vertices, int &vertexCount, unsigne
 {
 	vertexCount = 8;
 	indexCount = 36;
-
+	
 	*vertices = new VertexType[vertexCount]
 	{
-		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f) }, // 0
-		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f) }, // 1
-		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 0.0f) }, // 2
-		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 0.0f) }, // 3
-		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 0.0f) }, // 4
-		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 0.0f) }, // 5
-		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f) }, // 6
-		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 0.0f) }  // 7
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) }, // 0
+		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) }, // 1
+		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) }, // 2
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) }, // 3
+		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT2(1.0f, 1.0f) }, // 4
+		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT2(1.0f, 0.0f) }, // 5
+		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT2(0.0f, 1.0f) }, // 6
+		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT2(0.0f, 0.0f) }  // 7
 	};
-
+	
 	*indices = new unsigned long[indexCount]
 	{
 		0, 1, 2, 0, 2, 3,

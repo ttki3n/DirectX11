@@ -3,7 +3,7 @@
 #include "D3DClass.h"
 #include "CameraClass.h"
 #include "ModelClass.h"
-#include "ColorShaderClass.h"
+#include "TextureShaderClass.h"
 
 const bool IS_FULL_SCREEN = false;
 const bool IS_VSYNC_ENABLED = true;
@@ -27,5 +27,5 @@ private:
 	std::unique_ptr<D3DClass> m_directX3DPtr;
 	std::unique_ptr<CameraClass> m_cameraPtr;
 	std::unique_ptr<ModelClass> m_modelPtr;
-	std::unique_ptr<ColorShaderClass> m_colorShaderPtr;
+	std::unique_ptr<TextureShaderClass> m_shaderPtr;
 };

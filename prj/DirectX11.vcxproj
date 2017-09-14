@@ -139,6 +139,7 @@
     <ClInclude Include="..\include\ModelClass.h" />
     <ClInclude Include="..\include\stdafx.h" />
     <ClInclude Include="..\include\SystemClass.h" />
+    <ClInclude Include="..\include\TextureClass.h" />
     <ClInclude Include="..\include\TextureShaderClass.h" />
   </ItemGroup>
   <ItemGroup>
@@ -156,22 +157,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\SystemClass.cpp" />
+    <ClCompile Include="..\src\TextureClass.cpp" />
     <ClCompile Include="..\src\TextureShaderClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\colorPS.hlsl" />
     <None Include="..\shaders\colorVS.hlsl" />
+	<None Include="..\shaders\TexturePS.hlsl"/>
+	<None Include="..\shaders\TextureVS.hlsl"/>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\shaders\TexturePS.hlsl" />
-    <FxCompile Include="..\shaders\TextureVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-  </ItemGroup>
+  
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
