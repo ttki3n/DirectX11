@@ -35,6 +35,13 @@ void CameraClass::SetRotation(float x, float y, float z)
 	m_rotationZ = z;
 }
 
+void CameraClass::MoveCamera(float dx, float dy, float dz)
+{
+	m_posX += dx;
+	m_posY += dy;
+	m_posZ += dz;
+}
+
 XMFLOAT3 CameraClass::GetPosition()
 {
 	return XMFLOAT3(m_posX, m_posY, m_posZ);

@@ -66,8 +66,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
 	HRESULT hr;
 
-	//LoadSampleTriangle(&vertices, m_vertexCount, &indices, m_indexCount);
-	LoadSampleCube(&vertices, m_vertexCount, &indices, m_indexCount);
+	LoadSampleTriangle(&vertices, m_vertexCount, &indices, m_indexCount);
+	//LoadSampleCube(&vertices, m_vertexCount, &indices, m_indexCount);
 	
 	// Setup the description of the static vertex buffer
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;

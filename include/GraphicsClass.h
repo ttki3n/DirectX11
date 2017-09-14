@@ -22,6 +22,8 @@ public:
 	void Shutdown();
 	bool Frame(float deltaTime);
 
+	void MoveCamera(float dx, float dy, float dz);
+
 private:
 	bool Render(float deltaTime);
 	std::unique_ptr<D3DClass> m_directX3DPtr;
