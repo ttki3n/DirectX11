@@ -1,6 +1,7 @@
 #pragma once
 
 #include "D3DHelper.h"
+#include "DirectXTex.h"
 
 class TextureClass
 {

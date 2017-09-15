@@ -75,8 +75,8 @@ bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	// Generate mipmaps for this texture
 	deviceContext->GenerateMips(m_textureView);
 
-	delete[] m_targaData;
-	m_targaData = 0;
+	//delete m_targaData;
+	//m_targaData = 0;
 
 	return true;
 }
@@ -88,8 +88,8 @@ void TextureClass::Shutdown()
 	
 	if (m_targaData)
 	{
-		delete[] m_targaData;
-		m_targaData = 0;
+		//delete m_targaData;
+		//m_targaData = 0;
 	}
 }
 
@@ -100,130 +100,22 @@ ID3D11ShaderResourceView* TextureClass::GetTexture()
 
 bool TextureClass::LoadTarga(char* filename, int&width, int&height)
 {
-	int error, bpp, imageSize, index, i, j, k;
-	FILE* filePtr;
-	unsigned int count;
-	TargaHeader targaFileHeader;
-	unsigned char* targaImage;
+	ScratchImage *image = new ScratchImage();
 
-	// Open the targa file for reading in binary
-	error = fopen_s(&filePtr, filename, "rb");
-	if (error != 0)
-	{
-		return false;
-	}
-
-	// Read in the file header
-	count = (unsigned int)fread(&targaFileHeader, sizeof(TargaHeader), 1, filePtr);
-	if (count != 1)
-	{
-		return false;
-	}
-
-	// Get the important information from the header
-	height = (int)targaFileHeader.height;
-	width = (int)targaFileHeader.width;
-	bpp = (int)targaFileHeader.bpp;
-
-	// Check that it is 32 bit
-	if (bpp != 32)
-	{
-		return false;
-	}
-
-	// Calculate the size of the 32 bit image data
-	imageSize = width * height * 4;
-
-	// Allocate memory for the targa image data
-	targaImage = new unsigned char[imageSize];
-	if (!targaImage)
-	{
-		return false;
-	}
-
-	// Read in the targa image data
-	count = (unsigned int)fread(targaImage, 1, imageSize, filePtr);
-	if (count != imageSize)
-	{
-		return false;
-	}
-
-	// Close the file
-	error = fclose(filePtr);
-	if (error != 0)
-	{
-		return false;
-	}
-
-	// Allocate memory for the targa destination data
-	m_targaData = new unsigned char[imageSize];
-	if (!m_targaData)
-	{
-		return false;
-	}
-
-	// Initialize the index into the targa destination data array
-	index = 0;
-
-	// Initialize the index into the targa image data
-	k = (width * height * 4) - (width * 4);
-
-	// Copy the targa image data into the targa destination array in the correct order since the targa format is stored upside down
-	for (j = 0; j < height; ++j)
-	{
-		for (i = 0; i < width; ++i)
-		{
-			m_targaData[index + 0] = targaImage[k + 2]; // Red
-			m_targaData[index + 1] = targaImage[k + 1]; // Green
-			m_targaData[index + 1] = targaImage[k + 0]; // Blue
-			m_targaData[index + 3] = targaImage[k + 3]; // Alpha
-
-			// Increment the indexes into the targa data
-			k += 4;
-			index += 4;
-		}
-
-		// Set the targa image data index back to the preceding row at the beginning of the column since its reading it in upside down
-		k -= (width * 8);
-	}
-	for (i = 0; i < imageSize; ++i)
-	{
-		m_targaData[i] = targaImage[i];
-	}
+	size_t length = strlen(filename);
+	std::wstring wc(length, L'#');
+	mbstowcs(&wc[0], filename, length);
 	
-	// Release the targa image data now that it was copied into the destination array
-	delete[] targaImage;
-	targaImage = 0;
-
-	return true;
-}
-
-#if defined USE_LOAD_TEXTURE_LIB
-// xxxxxxxxxxxxxxxxxxxx
-bool TextureClass2::Initialize(ID3D11Device* device, char* filename)
-{
-	HRESULT result;
-
-	// Load the texture in.
-	result = D3DX11CreateShaderResourceViewFromFile(device, filename, NULL, NULL, &m_texture, NULL);
-	if (FAILED(result))
+	HRESULT hr = LoadFromTGAFile(wc.c_str(), nullptr, *image);
+	if (FAILED(hr))
 	{
 		return false;
 	}
 
+	const Image *img = image->GetImage(0, 0, 0);
+	width = img->width;
+	height = img->height;
+	m_targaData = img->pixels;
+
 	return true;
 }
-
-
-void TextureClass2::Shutdown()
-{
-	COM_SAFE_RELEASE(m_texture);
-}
-
-
-ID3D11ShaderResourceView* TextureClass2::GetTexture()
-{
-	return m_texture;
-}
-
-#endif
