@@ -26,8 +26,8 @@ public:
 	ID3D11ShaderResourceView* GetTexture();
 
 private:
-	bool LoadTarga(char*, int&, int&);
-	unsigned char* m_targaData;
+	bool LoadTarga(char*, std::unique_ptr<ScratchImage> &img);
+	
 	ID3D11Texture2D* m_texture;
 	ID3D11ShaderResourceView* m_textureView;
 };

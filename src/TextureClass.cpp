@@ -4,7 +4,6 @@
 
 TextureClass::TextureClass()
 {
-	m_targaData = 0;
 	m_texture = 0;
 	m_textureView = 0;
 }
@@ -19,23 +18,23 @@ TextureClass::~TextureClass()
 
 bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
 {
-	bool result;
-	int height, width;
+	bool result;	
 	D3D11_TEXTURE2D_DESC textureDesc;
 	HRESULT hr;
 	unsigned int rowPitch;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 
 	// Load the targa image data into memory
-	result = LoadTarga(filename, width, height);
+	std::unique_ptr<ScratchImage> image = std::make_unique<ScratchImage>();
+	result = LoadTarga(filename, image);
 	if (!result)
 	{
 		return false;
 	}
 
 	// Setup the description of the texture
-	textureDesc.Height = height;
-	textureDesc.Width = width;
+	textureDesc.Height = image->GetImage(0, 0, 0)->height;
+	textureDesc.Width = image->GetImage(0, 0, 0)->width;
 	textureDesc.MipLevels = 0;
 	textureDesc.ArraySize = 1;
 	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -54,10 +53,10 @@ bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	}
 
 	// Set the row pitch of the targa image data
-	rowPitch = (width * 4) * sizeof(unsigned char);
+	rowPitch = (image->GetImage(0, 0, 0)->width * 4) * sizeof(unsigned char);
 
 	// Copy the targe image data into the texture
-	deviceContext->UpdateSubresource(m_texture, 0, NULL, m_targaData, rowPitch, 0);
+	deviceContext->UpdateSubresource(m_texture, 0, NULL, image->GetImage(0, 0, 0)->pixels, rowPitch, 0);
 
 	// Setup the shader resource view description
 	srvDesc.Format = textureDesc.Format;
@@ -75,22 +74,13 @@ bool TextureClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceC
 	// Generate mipmaps for this texture
 	deviceContext->GenerateMips(m_textureView);
 
-	//delete m_targaData;
-	//m_targaData = 0;
-
 	return true;
 }
 
 void TextureClass::Shutdown()
 {
 	COM_SAFE_RELEASE(m_textureView);
-	COM_SAFE_RELEASE(m_texture);
-	
-	if (m_targaData)
-	{
-		//delete m_targaData;
-		//m_targaData = 0;
-	}
+	COM_SAFE_RELEASE(m_texture);	
 }
 
 ID3D11ShaderResourceView* TextureClass::GetTexture()
@@ -98,24 +88,17 @@ ID3D11ShaderResourceView* TextureClass::GetTexture()
 	return m_textureView;
 }
 
-bool TextureClass::LoadTarga(char* filename, int&width, int&height)
+bool TextureClass::LoadTarga(char* filename, std::unique_ptr<ScratchImage> &img)
 {
-	ScratchImage *image = new ScratchImage();
-
 	size_t length = strlen(filename);
 	std::wstring wc(length, L'#');
 	mbstowcs(&wc[0], filename, length);
 	
-	HRESULT hr = LoadFromTGAFile(wc.c_str(), nullptr, *image);
+	HRESULT hr = LoadFromTGAFile(wc.c_str(), nullptr, *img);
 	if (FAILED(hr))
 	{
 		return false;
 	}
-
-	const Image *img = image->GetImage(0, 0, 0);
-	width = img->width;
-	height = img->height;
-	m_targaData = img->pixels;
 
 	return true;
 }
