@@ -3,9 +3,3 @@
 using Visual Studio 2015 Community
 
 2) Change to this tutorial http://www.rastertek.com/tutdx11.html
-
-
-
-
-# Externals
-- https://github.com/Microsoft/DirectXTex  : only use DirectXTex/*.*
