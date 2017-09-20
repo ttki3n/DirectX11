@@ -10,6 +10,7 @@ private:
 	{
 		XMFLOAT3 position;
 		XMFLOAT2 texcoord;
+		XMFLOAT3 normal;
 	};
 
 public:

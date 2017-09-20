@@ -7,6 +7,7 @@ GraphicsClass::GraphicsClass()
 	m_cameraPtr = nullptr;
 	m_modelPtr = nullptr;
 	m_shaderPtr = nullptr;
+	m_lightPtr = nullptr;
 }
 
 GraphicsClass::GraphicsClass(const GraphicsClass& other)
@@ -55,7 +56,7 @@ bool GraphicsClass::Initialize(unsigned int width, unsigned int height, HWND hwn
 		return false;
 	}
 
-	m_shaderPtr = std::make_unique<TextureShaderClass>();
+	m_shaderPtr = std::make_unique<LightShaderClass>();
 	if (!m_shaderPtr)
 	{
 		return false;
@@ -68,11 +69,20 @@ bool GraphicsClass::Initialize(unsigned int width, unsigned int height, HWND hwn
 		return false;
 	}
 
+	m_lightPtr = std::make_unique<LightClass>();
+	if (!m_lightPtr)
+	{
+		return false;
+	}
+
+	m_lightPtr->SetDiffuseColor(1.0f, 0.0f, 1.0f, 1.0f);
+	m_lightPtr->SetDirection(0.0f, 0.0f, 1.0f);
+
 	return true;
 }
 
 void GraphicsClass::Shutdown()
-{
+{	
 	if (m_shaderPtr)
 	{
 		m_shaderPtr->Shutdown();
@@ -122,8 +132,10 @@ bool GraphicsClass::Render(float deltaTime)
 	m_modelPtr->Render(m_directX3DPtr->GetDeviceContext());
 
 	// Render the model using the color shader
+	
 	result = m_shaderPtr->Render(m_directX3DPtr->GetDeviceContext(), m_modelPtr->GetIndexCount(),
-		worldMatrix, viewMatrix, projectionMatrix, m_modelPtr->GetTexture());
+		worldMatrix, viewMatrix, projectionMatrix, m_modelPtr->GetTexture(), m_lightPtr->GetDirection(), m_lightPtr->GetDiffuseColor());
+	
 	if (!result)
 	{
 		return false;

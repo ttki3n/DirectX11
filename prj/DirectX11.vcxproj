@@ -136,6 +136,8 @@
     <ClInclude Include="..\include\D3DHelper.h" />
     <ClInclude Include="..\include\GraphicsClass.h" />
     <ClInclude Include="..\include\InputClass.h" />
+    <ClInclude Include="..\include\LightClass.h" />
+    <ClInclude Include="..\include\LightShaderClass.h" />
     <ClInclude Include="..\include\ModelClass.h" />
     <ClInclude Include="..\include\stdafx.h" />
     <ClInclude Include="..\include\SystemClass.h" />
@@ -148,6 +150,8 @@
     <ClCompile Include="..\src\D3DClass.cpp" />
     <ClCompile Include="..\src\GraphicsClass.cpp" />
     <ClCompile Include="..\src\InputClass.cpp" />
+    <ClCompile Include="..\src\LightClass.cpp" />
+    <ClCompile Include="..\src\LightShaderClass.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ModelClass.cpp" />
     <ClCompile Include="..\src\stdafx.cpp">
@@ -171,6 +175,14 @@
     <ProjectReference Include="..\externals\DirectXTex\DirectXTex_Desktop_2015.vcxproj">
       <Project>{371b9fa9-4c90-4ac6-a123-aced756d6c77}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shaders\LightPS.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\shaders\LightVS.hlsl">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

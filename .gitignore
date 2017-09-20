@@ -9,3 +9,4 @@ prj/*
 
 ## Ignore abcxyz
 externals/DirectXTex/Bin
+externals/DirectXTex/*.user
